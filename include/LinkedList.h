@@ -49,7 +49,7 @@ public:
         size++;
     }
 
-    E remove()throw(runtime_error){
+    E* remove()throw(runtime_error){
         if(current == tail)
             throw runtime_error("No hay elemento para borrar");
         E res = current->next->element;
