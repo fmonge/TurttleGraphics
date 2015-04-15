@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1429124748 source:c:\users\fabián monge\documents\github\turtlegraphics\turttlegraphics\main.cpp
+1429132023 source:c:\users\fabián monge\documents\github\turtlegraphics\turttlegraphics\main.cpp
 	<iostream>
 	<winbgim.h>
 	<string.h>
@@ -7,15 +7,6 @@
 	"LinkedList.h"
 	"Instrucciones.h"
 	"Turtle.h"
-
-1429122647 c:\users\fabián monge\documents\github\turtlegraphics\turttlegraphics\include\dibujar.h
-	<string>
-	<string.>
-	<iostream>
-	<string>
-	<winbgim.h>
-	<stdlib.h>
-	"LinkedList.h"
 
 1429122540 c:\users\fabián monge\documents\github\turtlegraphics\turttlegraphics\include\linkedlist.h
 	"Node.h"
@@ -29,7 +20,7 @@
 1429120091 c:\users\fabián monge\documents\github\turtlegraphics\turttlegraphics\include\instrucciones.h
 	<map>
 
-1429127682 c:\users\fabián monge\documents\github\turtlegraphics\turttlegraphics\include\turtle.h
+1429131824 c:\users\fabián monge\documents\github\turtlegraphics\turttlegraphics\include\turtle.h
 	<iostream>
 	<winbgim.h>
 	<cmath>

@@ -17,59 +17,33 @@ class Turtle{
 public:
     Turtle(){
 
-    //LinkedList<Instrucciones> ListaInstrucciones;
-   // LinkedList<string> ListaDatos;
         initwindow (X_WINDOW,Y_WINDOW);
         avance = 0;
         grados = 0;
+        lapiz = 1;
+        color = 0;
         gradosAumentar = 0;
         x = X_WINDOW/2;
         y = Y_WINDOW/2;
+        x2 = y2 = 0;
+
         anchoDeLinea = 1;
     }
 
-    void leerInstruccion(string cmd){
-        //numDeInstrucciones++;
+    void leerInstruccion(string cmd)
+    {
         gurdarComando(cmd);
         dibujarLista();
-
-   /* ListaInstrucciones.append(Instrucciones::back);
-    ListaInstrucciones.append(Instrucciones::exec);
-    ListaInstrucciones.append(Instrucciones::pen);
-    ListaInstrucciones.append(Instrucciones::forward);
-    ListaInstrucciones.goToStart();
-    int sizeList = ListaInstrucciones.getSize();
-    for(int i = 0; i!=sizeList; i++){
-        Instrucciones getInst = ListaInstrucciones.getElement();
-        cout << int(getInst) << endl;
-        ListaInstrucciones.next();
     }
-    ListaInstrucciones.goToPos(2);
-    Instrucciones getInst = ListaInstrucciones.getElement();
-    cout << int(getInst) << endl;
-
-*/
-       /*
-        ListaDatos.goToStart();
-        int sizeList = ListaDatos.getSize();
-        for(int i = 0; i!=sizeList; i++){
-            cout << ListaDatos.getElement() << endl;
-            ListaDatos.next();
-        }
-        */
-
-    }
-
-
 private:
 
     int avance;
     int grados;
+    int lapiz;
     int gradosAumentar;
     int x,x2;
     int y,y2;
     int anchoDeLinea;
-    int lapiz;
     int color;
     static int numDeInstrucciones;
    //Instrucciones instruccion;
@@ -121,7 +95,7 @@ private:
     {
         x = X_WINDOW/2;
         y = Y_WINDOW/2;
-        cout << "---Recorrer-lista-----<" << "size< "  <<ListaInstrucciones.getSize()<<" >"<< endl;
+       // cout << "---Recorrer-lista-----<" << "size< "  <<ListaInstrucciones.getSize()<<" >"<< endl;
 
         if(ListaInstrucciones.getSize() == 0)
             cout << "Lista vacia" << endl;
@@ -133,20 +107,17 @@ private:
             ListaDatos.goToStart();
             int size = ListaInstrucciones.getSize();
             int sizeList = ListaDatos.getSize();
-            cout << "el Tamaño de la lista es de: " << sizeList << endl;
+            //cout << "el Tamaño de la lista es de: " << sizeList << endl;
             if(size != sizeList){
                 cout <<     "Algo salio mal! D: listas nos compatibles" << endl;
             }else
             for(int i = 0; i!=sizeList; i++)
             {
-
-                cout << endl;
-                cout << endl;
-                cout << " Estoy en el  for con pos = " << i << endl;
+                //cout << " Estoy en el  for con pos = " << i << endl;
 
                 string valor = ListaDatos.getElement();
                 Instrucciones instruccion = ListaInstrucciones.getElement();
-                cout << "   Instruccion actual: "<< int(instruccion) <<". Con el dato: " << valor <<endl;
+                //cout << "   Instruccion actual: "<< int(instruccion) <<". Con el dato: " << valor <<endl;
                ejecutarInstruccion(ListaInstrucciones.getElement(),ListaDatos.getElement());
                ListaDatos.next();
                ListaInstrucciones.next();
@@ -161,7 +132,6 @@ private:
         {
             case Instrucciones::forward:
             {
-                cout << "info:       in fordward"  << endl;
                 avance = atoi(valor.c_str());
                 dibujarLinea();
 
@@ -178,7 +148,7 @@ private:
             }
             case Instrucciones::right:
             {   // problemas
-                grados = 360 - atoi(valor.c_str());
+                grados += atoi(valor.c_str());
                 break;
             }
             case Instrucciones::left:
@@ -299,6 +269,8 @@ private:
             }
         }
     }
+
+
 
 
 
