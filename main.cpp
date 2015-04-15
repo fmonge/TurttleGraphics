@@ -1,5 +1,7 @@
 #include <iostream>
 #include <winbgim.h>
+#include <string.h>
+//#include <string>
 #include <cmath>
 
 #include  "LinkedList.h"
@@ -9,35 +11,59 @@
 #define PI 3.14159265358979
 #define X_WINDOW 600
 #define Y_WINDOW 400*/
+#include <array>
 
 
 using namespace std;
-
+//int main(int argc, char **argv)
 int main()
 {
 
 
-   Dibujar dibujo;
+    /*string a1 = "hola";
+    string a2 = "hola";
+    string a3 = "hoala";
+    if(strcmp(a1.c_str(),a2.c_str()) == 0)
+        cout << "son iguales ";
+    else
+        cout << "NO son iguales ";
+    if(strcmp(string("hola").c_str(),a2.c_str()) == 0)
+        cout << "2son iguales ";
+    else
+        cout << "2NO son iguales ";*/
+    //if(strcmp(a1,a2))
+
+
+  //    LinkedList<Array> ListaInstrucciones;
+    //  ListaInstrucciones.append(["palabra","palabra"]);
+    //  ListaInstrucciones.append(["palabra2","Palabra"]);
+
+
+
+    Dibujar dibujo;
     dibujo.leerEntrada();
+//
 
-
-
+/*
 
 
         string linea[2];
-        string delimitardor = " ";
+        string delimitardor = "-";
         size_t pos = 0;
         string token;
+        string a,b;
 
-string instruccion = "hola mundo";
+    string instruccion;// = "hola mundo";
+    cout << "Digita la inst" << endl;
+    cin >> instruccion;
         while ((pos = instruccion.find(delimitardor)) != string::npos) {
             token = instruccion.substr(0, pos);
-            linea [0] = token ;
+            a = token ;
             instruccion.erase(0, pos + delimitardor.length());
         }
-        linea[1] =  instruccion;
+        b =  instruccion;
 
-        cout << linea[0] << " -- " << linea[1] << endl;
+        cout << a << " -- " << b << endl;
 /*
 
 
