@@ -6,18 +6,18 @@
 
 #include  "LinkedList.h"
 #include "Instrucciones.h"
-#include "Dibujar.h"
+#include "Turtle.h"
 /*
 #define PI 3.14159265358979
 #define X_WINDOW 600
 #define Y_WINDOW 400*/
-#include <array>
+//#include <array>
 
 
 using namespace std;
-//int main(int argc, char **argv)
 int main()
 {
+//int main(int argc, char **argv)
 
 
     /*string a1 = "hola";
@@ -39,9 +39,30 @@ int main()
     //  ListaInstrucciones.append(["palabra2","Palabra"]);
 
 
+    Turtle *turtle = new Turtle();
 
-    Dibujar dibujo;
-    dibujo.leerEntrada();
+    bool lectura = true;
+    cout << endl;
+    cout << "Digite los comandos malignos para la invocacion de los demonios. "<<endl;
+    cout << "Reinicie su equipo despues de cada comando para el correcto funcionamiento. "<<endl << endl;
+    while (lectura){
+        cout << "LUser@winBug~$ ";
+        string instruccion = "";
+        getline(cin,instruccion);
+        //cout << endl;
+        if( instruccion.compare("exit")== 0)
+        {
+             lectura = false;
+             closegraph();
+             return 0;
+        }
+        turtle->leerInstruccion(instruccion);
+    }
+
+    return 0;
+}
+   // Dibujar dibujo;
+    //dibujo.leerEntrada();
 //
 
 /*
@@ -92,5 +113,3 @@ int main()
 
     closegraph();*/
 
-    return 0;
-}

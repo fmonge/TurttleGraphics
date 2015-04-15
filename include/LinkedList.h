@@ -86,8 +86,8 @@ public:
 
 
     E getElement() throw(runtime_error){
-        if(size == 0 || current->next == NULL)
-            throw runtime_error("No hay elementos");
+        if(size == 0 || current == NULL)
+            throw runtime_error("No hay elementos - getElement");
         return current->next->element;
     }
 
