@@ -18,7 +18,7 @@ enum class Instrucciones
     pos,
     xcor,
     ycor,
-    heanding,
+    heading,
     pendown,
     penup,
     pensize,
@@ -31,7 +31,8 @@ enum class Instrucciones
     loadfile,
     clearhistory,
     exec,
-    pen
+    pen,
+    history
 };
 
 map<string , Instrucciones> mapString =
@@ -49,7 +50,7 @@ map<string , Instrucciones> mapString =
     {"pos" , Instrucciones::pos},
     {"xcor" , Instrucciones::xcor},
     {"ycor" , Instrucciones::ycor},
-    {"heanding" , Instrucciones::heanding},
+    {"heading" , Instrucciones::heading},
     {"pendown" , Instrucciones::pendown},
     {"penup" , Instrucciones::penup},
     {"pensize" , Instrucciones::pensize},
@@ -62,7 +63,8 @@ map<string , Instrucciones> mapString =
     {"loadfile" , Instrucciones::loadfile},
     {"clearhistory" , Instrucciones::clearhistory},
     {"exec" , Instrucciones::exec},
-    {"pen" , Instrucciones::pen}
+    {"pen" , Instrucciones::pen},
+    {"history" , Instrucciones::history}
 };
 map<int , Instrucciones> MapInt =
 {
@@ -79,7 +81,7 @@ map<int , Instrucciones> MapInt =
     {11 , Instrucciones::pos},
     {12 , Instrucciones::xcor},
     {13 , Instrucciones::ycor},
-    {14 , Instrucciones::heanding},
+    {14 , Instrucciones::heading},
     {15 , Instrucciones::pendown},
     {16 , Instrucciones::penup},
     {17 , Instrucciones::pensize},
@@ -92,8 +94,25 @@ map<int , Instrucciones> MapInt =
     {24 , Instrucciones::loadfile},
     {25 , Instrucciones::clearhistory},
     {26 , Instrucciones::exec},
-    {27 , Instrucciones::pen}
+    {27 , Instrucciones::pen},
+    {28 , Instrucciones::history}
 };
-
+map<string, int> mapColor =
+{
+    {"blue", 1},
+    {"darkgreen", 2},
+    {"cyan", 3},
+    {"red", 4},
+    {"magenta", 5},
+    {"brown", 6},
+    {"lightgray", 7},
+    {"darkgray", 8},
+    {"purple", 9},
+    {"lightgreen", 10},
+    {"lightcyan", 11},
+    {"pink", 13},
+    {"black", 14},
+    {"white", 15}
+};
 #endif // INSTRUCCIONES_H
 

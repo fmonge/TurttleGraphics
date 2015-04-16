@@ -27,3 +27,31 @@
 	"LinkedList.h"
 	"Instrucciones.h"
 
+1429152228 source:c:\users\admin\documents\github\turttlegraphics\main.cpp
+	<iostream>
+	<winbgim.h>
+	<string.h>
+	<cmath>
+	"LinkedList.h"
+	"Instrucciones.h"
+	"Turtle.h"
+
+1429149227 c:\users\admin\documents\github\turttlegraphics\include\linkedlist.h
+	"Node.h"
+	<stdlib.h>
+	<stdexcept>
+	<iostream>
+
+1429150501 c:\users\admin\documents\github\turttlegraphics\include\node.h
+	<stdlib.h>
+
+1429209900 c:\users\admin\documents\github\turttlegraphics\include\instrucciones.h
+	<map>
+
+1429218047 c:\users\admin\documents\github\turttlegraphics\include\turtle.h
+	<iostream>
+	<winbgim.h>
+	<cmath>
+	"LinkedList.h"
+	"Instrucciones.h"
+

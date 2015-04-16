@@ -13,7 +13,8 @@ public:
     Node(E pElement, Node<E> * pNext = NULL)
     {
         element = pElement;
-        next = pNext;
+        next
+         = pNext;
     }
 
     Node(Node<E>*pNext = NULL)
