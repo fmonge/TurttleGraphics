@@ -153,7 +153,6 @@ private:
     }
 
 
-
     int gurdarComando(string cmd)
     {
         size_t pos = 0;
@@ -164,27 +163,20 @@ private:
         ListaHistorial.append(cmd);
 
 
-        string arreglo[2];
-        int h=1;
-
         while ((pos = cmd.find(delimitador)) != string::npos) {
             token = cmd.substr(0, pos);
-            arreglo[h] = string(token);
-            h++;
+            part1 = string(token);
             int temp = pos+1;
             char let = cmd[temp];
             cmd.erase(0, pos + delimitador.length());
-
+            if (token == "write"){
+                break;
+            }
             //if (let=='"')
                 //break;
 
-            cout<<let<<endl;
-
-
-
         }
-        arreglo[h] = string(cmd);
-        cout<<"areglo-> "<<arreglo[1]<<"-+-"<<arreglo[2]<<endl;
+        part2 = string(cmd);
         cout<<"Parte1 = "<<part1<<endl;
         cout<<"Parte2 = "<<part2<<endl;
 
@@ -403,8 +395,9 @@ private:
             }
             case Instrucciones::write:
             {
+
                 size_t pos = 0;
-                string delimitador = ",";
+                string delimitador = " ";
                 string part1;
                 string part2;
                 string token;
@@ -413,13 +406,23 @@ private:
                     token = valor.substr(0, pos);
                     part1 = string(token);
                     valor.erase(0, pos + delimitador.length());
-
+                    char let=valor[pos+1];
+                    if (let==' ')
+                        cout<<endl;
+                        break;
                 }
                 part2=  string(valor);
+                part2.erase(0, 1);
+                part2.erase(part2.length()-1, part2.length());
+
+
+                cout<<"Parte1 = "<<part1<<endl;
+                cout<<"Parte2 = "<<part2<<endl;
                 int textsize = atoi(part1.c_str());;
                 settextstyle(0,20,textsize);
-                moveto(x+25,y+20);
+                moveto(x+70,y+20);
                 outtext(part2.c_str());
+                delay(10);
                 break;
             }
             case Instrucciones::repeat:
