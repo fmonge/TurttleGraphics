@@ -9,6 +9,7 @@
 #define PI 3.14159265358979
 #define X_WINDOW 600
 #define Y_WINDOW 400
+#include <sstream>
 
 using namespace std;
 class Turtle{
@@ -58,6 +59,15 @@ private:
     LinkedList<string> ListaDatostemp;
 
     Instrucciones toInstruction(string cmd){return  mapString[cmd];}
+    bool is_number(const string& s){
+
+       for(int i = 0; i < s.length(); i++){//for each char in string,
+          if(isdigit(s[i]))
+            {
+             return false;
+            }
+        }return true;
+    }
 
     bool casoEsp(string str){
         Instrucciones instruction = toInstruction(str);
@@ -96,7 +106,15 @@ private:
                 string lapiz= "arriba";
                 if (pen)
                     lapiz="abajo";
-                cout<<"El lapiz se encuentra "<<lapiz<<", con grosor "<<pensize<<" y color "<<pencolor<<endl;
+                string pcolor = "";
+                pcolor = mapColorString[pencolor];
+                if (pcolor==""){
+                        ostringstream convert;   // stream used for the conversion
+
+                    convert << pencolor;
+                    pcolor = convert.str();
+                }
+                cout<<"El lapiz se encuentra "<<lapiz<<", con grosor "<<pensize<<" y color "<<pcolor<<endl;
                 return true;
             }
             case Instrucciones::loadfile:
@@ -208,7 +226,7 @@ private:
             int temp = pos+1;
             char let = cmd[temp];
             cmd.erase(0, pos + delimitador.length());
-            if (token == "write"||token =="repeat"){
+            if (token == "write"||token =="repeat"||token=="color"){
                 break;
             }
             //if (let=='"')
@@ -227,7 +245,6 @@ private:
                 Instrucciones nuevaInstruccion = toInstruction(part1);//*****
 
                 if(casoEsp(part1)){
-                    cout<<"si paso"<<endl;
                     return 0;
                 }
 
@@ -505,6 +522,41 @@ private:
             {
                 pencolor = mapColor[valor];
                 setcolor(pencolor);
+                if (is_number(valor)==false){
+                    int ind = 0;
+                    int colorR;
+                    int colorG;
+                    int colorB;
+                    int num = 1;
+                    string token;
+                    string part1;
+                    valor += " 4r1s";
+                    while(valor!="4r1s"){
+                        if (valor[ind]==' '){
+                            token = valor.substr(0,ind);
+                            part1 = string(token);
+                            valor.erase(0, ind+1);
+                            if (num==1){
+                                colorR = atoi(part1.c_str());
+                            }
+                            if (num==2){
+                                colorG = atoi(part1.c_str());
+                            }
+                            if (num==3){
+                                colorB = atoi(part1.c_str());
+                            }
+                            num++;
+                            ind = 0;
+                            continue;
+                            //cout<<"Parte1= "<<part1<<endl;
+                            //cout<<"Parte2= "<<part2<<endl;
+                            }
+                            ind++;
+                    }
+                    pencolor = COLOR(colorR,colorG,colorB);
+                    setcolor(pencolor);
+                }
+
                 break;
             }
             case Instrucciones::write:
@@ -538,7 +590,7 @@ private:
 
 
                 int textsize = atoi(part1.c_str());;
-                settextstyle(0,20,textsize);
+                settextstyle(0,0,textsize);
                 moveto(x,y+20);
                 outtext(part2.c_str());
                 delay(10);

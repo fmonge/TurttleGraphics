@@ -114,5 +114,22 @@ map<string, int> mapColor =
     {"black", 14},
     {"white", 15}
 };
+map<int, string> mapColorString =
+{
+    {1, "blue"},
+    {2, "darkgreen"},
+    {3, "cyan"},
+    {4, "red"},
+    {5, "magenta"},
+    {6, "brown"},
+    {7, "lightgray"},
+    {8, "darkgray"},
+    {9, "purple"},
+    {10, "lightgreen"},
+    {11, "lightcyan"},
+    {13, "pink"},
+    {14, "black"},
+    {15, "white"}
+};
 #endif // INSTRUCCIONES_H
 
