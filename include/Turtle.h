@@ -11,6 +11,7 @@
 #define Y_WINDOW 400
 #include <sstream>
 
+
 using namespace std;
 class Turtle{
 
@@ -25,6 +26,8 @@ public:
         pensize=1;
         x = X_WINDOW/2;
         y = Y_WINDOW/2;
+        tempX = X_WINDOW/2;
+        tempY = Y_WINDOW/2;
         x2 = x;
         y2 = y;
         pen = true;
@@ -45,8 +48,13 @@ private:
     int y,y2;
     int pensize;
     int pencolor;
+    int tempX;
+    int tempY;
     static int numDeInstrucciones;
     bool pen;
+    int colorR;
+    int colorG;
+     int colorB;
    //Instrucciones instruccion;
 
     LinkedList<Instrucciones> ListaInstrucciones;
@@ -109,10 +117,16 @@ private:
                 string pcolor = "";
                 pcolor = mapColorString[pencolor];
                 if (pcolor==""){
-                        ostringstream convert;   // stream used for the conversion
-
-                    convert << pencolor;
-                    pcolor = convert.str();
+                    ostringstream convertR;   // stream used for the conversion
+                    convertR << colorR;
+                    string r = convertR.str() + " ";
+                    ostringstream convertG;
+                    convertG << colorG;
+                    string g = convertG.str() + " ";
+                    ostringstream convertB;
+                    convertB << colorB;
+                    string b = convertB.str() + "\"";
+                    pcolor ="\""+r+g+b;
                 }
                 cout<<"El lapiz se encuentra "<<lapiz<<", con grosor "<<pensize<<" y color "<<pcolor<<endl;
                 return true;
@@ -134,9 +148,24 @@ private:
             }
             case Instrucciones::clear:
             {
+                /*tempX = x;
+                tempY = y;*/
                 cleardevice();
                 ListaDatos.clear();
                 ListaInstrucciones.clear();
+
+                ostringstream xString;
+                xString << x;
+                ostringstream yString;
+                yString << y;
+                ostringstream gradosString;
+                cout<<grados<<endl;
+                gradosString << grados;
+                gurdarComando("penup",false);
+                cout<<"En string "<<gradosString.str()<<endl;
+                gurdarComando("right "+gradosString.str(),false);
+                gurdarComando("setpos "+xString.str()+","+yString.str(),false);//+atof(x)+","+y);
+                gurdarComando("pendown",false);
                 tortuga();
                 return true;
             }
@@ -175,12 +204,12 @@ private:
     void tortuga(){
         setlinestyle(0,0,1);
         setcolor(10);
-        setfillstyle(SOLID_FILL, 2);
+        setfillstyle(XHATCH_FILL, 2);
         int grad = grados;
-        fillellipse(x,y,10,10);
+        fillellipse(x,y,8,8);
         //circle(x,y,10);
-        int nuevaDistanciaX = 13 * cos(grad*PI/180);
-        int nuevaDistanciaY = 13 * sin(grad*PI/180);
+        int nuevaDistanciaX = 11 * cos(grad*PI/180);
+        int nuevaDistanciaY = 11 * sin(grad*PI/180);
         int xtemp = nuevaDistanciaX+x;
         int ytemp = nuevaDistanciaY+y;
         int patas = 4;
@@ -189,8 +218,8 @@ private:
         //circle(xtemp,ytemp,4);
         grad-=45;
         while (patas >0){
-            int nuevaDistanciaX = 12 * cos(grad*PI/180);
-            int nuevaDistanciaY = 12 * sin(grad*PI/180);
+            int nuevaDistanciaX = 10 * cos(grad*PI/180);
+            int nuevaDistanciaY = 10 * sin(grad*PI/180);
             int xtemp = nuevaDistanciaX+x;
             int ytemp = nuevaDistanciaY+y;
             fillellipse(xtemp,ytemp,2,2);
@@ -198,8 +227,8 @@ private:
             patas--;
         }
         grad=grados+180;
-        nuevaDistanciaX = 11.5 * cos(grad*PI/180);
-        nuevaDistanciaY = 11.5 * sin(grad*PI/180);
+        nuevaDistanciaX = 9.5 * cos(grad*PI/180);
+        nuevaDistanciaY = 9.5 * sin(grad*PI/180);
         xtemp = nuevaDistanciaX+x;
         ytemp = nuevaDistanciaY+y;
         fillellipse(xtemp,ytemp,1.5,1.5);
@@ -210,14 +239,15 @@ private:
 
     }
 
-    int gurdarComando(string cmd)
+    int gurdarComando(string cmd,boolean guardarHistorial =true)
     {
         size_t pos = 0;
         string delimitador = " ";
         string part1;
         string part2;
         string token;
-        ListaHistorial.append(cmd);
+        if (guardarHistorial)
+            ListaHistorial.append(cmd);
 
 
         while ((pos = cmd.find(delimitador)) != string::npos) {
@@ -281,8 +311,8 @@ private:
 
     void dibujarLista()
     {
-        x = X_WINDOW/2;
-        y = Y_WINDOW/2;
+        x = /*tempX;*/X_WINDOW/2;
+        y = /*tempY;*/Y_WINDOW/2;
        // cout << "---Recorrer-lista-----<" << "size< "  <<ListaInstrucciones.getSize()<<" >"<< endl;
         pensize=1;
         setlinestyle(0, 0, pensize);
@@ -435,6 +465,9 @@ private:
                     valor.erase(0, pos + delimitador.length());
                 }
                 part2=  string(valor);
+                if(pen==true){
+                    line(x, y, atoi(part1.c_str()), atoi(part2.c_str()));
+                }
                 x = atoi(part1.c_str());
                 y = atoi(part2.c_str());
                 break;
@@ -524,9 +557,6 @@ private:
                 setcolor(pencolor);
                 if (is_number(valor)==false){
                     int ind = 0;
-                    int colorR;
-                    int colorG;
-                    int colorB;
                     int num = 1;
                     string token;
                     string part1;
@@ -628,7 +658,6 @@ private:
 
                 pos = 0;
                 string delimitadortemp = ",";
-                string delimitadortemp2 = ".";
                 part2 += ",4r1s";
                 int ind =0;
                 cout<<part1<<endl;
@@ -659,7 +688,8 @@ private:
                     token=part2;
                     gurdarComandotemp(token2);
                 }
-                for(veces;veces > 0;veces--){
+                for(;veces > 0;veces--){
+
                     dibujarListatemp();
                 }
 
