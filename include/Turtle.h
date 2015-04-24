@@ -1,15 +1,23 @@
 #ifndef TURTLE_H
 #define TURTLE_H
-#include <iostream>
+
 #include <winbgim.h>
-//#include <string.h>
+#include <iostream>
+#include <string.h>
 #include <cmath>
+
+#include <fstream>
+#include <sstream>
+
+
 #include  "LinkedList.h"
+#include  "Archivo.h"
 #include "Instrucciones.h"
+#include "FileManager.h"
+
 #define PI 3.14159265358979
 #define X_WINDOW 600
 #define Y_WINDOW 400
-#include <sstream>
 
 
 using namespace std;
@@ -21,6 +29,7 @@ public:
 
         initwindow (X_WINDOW,Y_WINDOW);
         avance = 0;
+        dibujarLinea();
         grados = 0;
         pencolor = 15;
         pensize=1;
@@ -32,6 +41,8 @@ public:
         y2 = y;
         pen = true;
         tortuga();
+        dibujar = true;
+      //  rutaArchivo ="./ListaInstrucciones";
         //bar(x-5,y-5,x+5,y+5);
     }
 
@@ -40,8 +51,11 @@ public:
         gurdarComando(cmd);
         //dibujarLista();
     }
+
+
 private:
 
+//    string rutaArchivo;
     int avance;
     int grados;
     int x,x2;
@@ -54,7 +68,8 @@ private:
     bool pen;
     int colorR;
     int colorG;
-     int colorB;
+    int colorB;
+    bool dibujar;
    //Instrucciones instruccion;
 
     LinkedList<Instrucciones> ListaInstrucciones;
@@ -66,7 +81,12 @@ private:
     LinkedList<Instrucciones> ListaInstruccionestemp;
     LinkedList<string> ListaDatostemp;
 
+    LinkedList<Instrucciones> ListaInstruccionesLeidas;
+    LinkedList<string> ListaDatosLeidas;
+
     Instrucciones toInstruction(string cmd){return  mapString[cmd];}
+            //convirte de string a tipo Instruccion
+
     bool is_number(const string& s){
 
        for(int i = 0; i < s.length(); i++){//for each char in string,
@@ -133,13 +153,13 @@ private:
             }
             case Instrucciones::loadfile:
             {
-
-                break;
+                leerArchivo();
+                return true;
             }
             case Instrucciones::exec:
             {
-
-                break;
+                AgregarLista();
+                return true;
             }
             case Instrucciones::clearhistory:
             {
@@ -238,8 +258,8 @@ private:
 
 
     }
-
-    int gurdarComando(string cmd,boolean guardarHistorial =true)
+    // gurdarComando(line,false, true))
+    int gurdarComando(string cmd,boolean guardarHistorial =true, boolean guardarEnTemporal = false)
     {
         size_t pos = 0;
         string delimitador = " ";
@@ -250,7 +270,8 @@ private:
             ListaHistorial.append(cmd);
 
 
-        while ((pos = cmd.find(delimitador)) != string::npos) {
+        while ((pos = cmd.find(delimitador)) != string::npos)
+        {
             token = cmd.substr(0, pos);
             part1 = string(token);
             int temp = pos+1;
@@ -259,42 +280,48 @@ private:
             if (token == "write"||token =="repeat"||token=="color"){
                 break;
             }
-            //if (let=='"')
-                //break;
 
         }
         part2 = string(cmd);
-        /*cout<<"Parte1 = "<<part1<<endl;
-        cout<<"Parte2 = "<<part2<<endl;*/
+        // /*
+        //cout<<"pParte1 = "<<part1<<endl;
+        //cout<<"pParte2 = "<<part2<<endl;
+        //  */
+        if(strcmp(string("").c_str(),part1.c_str())==0)
+        {
+            part1 = part2;
+            part2 = "next ";
+          //  cout<<"nParte1 = "<<part1<<endl;
+           //cout<<"nParte2 = "<<part2<<endl;
+            Instrucciones nuevaInstruccion = toInstruction(part1);//*****
 
-            if(strcmp(string("").c_str(),part1.c_str())==0){
-                part1 = part2;
-                part2 = "next ";
-                //cout<<"Parte1 = "<<part1<<endl;
-                //cout<<"Parte2 = "<<part2<<endl;
-                Instrucciones nuevaInstruccion = toInstruction(part1);//*****
+            if(casoEsp(part1))
+                return 1;
 
-                if(casoEsp(part1)){
-                    return 0;
-                }
 
-            }
+        }
+        //Instrucciones nuevaInstruccion;
         Instrucciones nuevaInstruccion = toInstruction(part1);
-        ListaInstrucciones.append(nuevaInstruccion);//**********
-        //**********
-
-        if(strcmp(string("").c_str(),part2.c_str()) == 0)
-            ListaDatos.append("nextLine");
-        else
-            ListaDatos.append(part2);
+        string part;
+         if(!guardarEnTemporal)
+        {
+            ListaInstrucciones.append(nuevaInstruccion);//**********
+            if(strcmp(string("").c_str(),part2.c_str()) == 0)
+                ListaDatos.append("nextLine");
+            else
+                ListaDatos.append(part2);
             dibujarLista();
+
+         }else{
+            ListaInstruccionesLeidas.append(nuevaInstruccion);//**********
+            ListaDatosLeidas.append(part2);
+         }
+
         return 0;
-    }  // le cuarda nextLine en la lista de datos! pero cuando lee
-    // nada pasa..
+    }
+
 
     void dibujarLinea(){
-        //cout << "info:       -+DIBUJANDO+-- -> "  <<endl;
-        //cout  <<"info:      " << avance<< endl;
         int nuevaDistanciaX = avance * cos(grados*PI/180);
         int nuevaDistanciaY = avance * sin(grados*PI/180);
         x2 = x +  nuevaDistanciaX;
@@ -311,9 +338,9 @@ private:
 
     void dibujarLista()
     {
-        x = /*tempX;*/X_WINDOW/2;
-        y = /*tempY;*/Y_WINDOW/2;
-       // cout << "---Recorrer-lista-----<" << "size< "  <<ListaInstrucciones.getSize()<<" >"<< endl;
+        x =X_WINDOW/2;
+        y =Y_WINDOW/2;
+
         pensize=1;
         setlinestyle(0, 0, pensize);
         pencolor = 15;
@@ -329,31 +356,25 @@ private:
             ListaInstrucciones.goToStart();
             ListaDatos.goToStart();
             int sizeList = ListaDatos.getSize();
-            //cout << "el Tamaño de la lista es de: " << sizeList << endl;
 
             for(int i = 0; i!=sizeList; i++)
             {
-                //cout << " Estoy en el  for con pos = " << i << endl;
-
                 string valor = ListaDatos.getElement();
-               // Instrucciones instruccion = ListaInstrucciones.getElement();
-                //cout << "   Instruccion actual: "<< int(instruccion) <<". Con el dato: " << valor <<endl;
-               ejecutarInstruccion(ListaInstrucciones.getElement(),ListaDatos.getElement());
-               ListaDatos.next();
-               ListaInstrucciones.next();
-               sizeList = ListaDatos.getSize();
+                Instrucciones instruccion = ListaInstrucciones.getElement();
+                cout << "   Instruccion actual: "<< int(instruccion) <<". Con el dato: " << valor <<endl;
+                ejecutarInstruccion(ListaInstrucciones.getElement(),ListaDatos.getElement());
+                ListaDatos.next();
+                ListaInstrucciones.next();
+                sizeList = ListaDatos.getSize();
             }
             tortuga();
-             kbhit();
+            kbhit();
 
         }
     }
     void dibujarListatemp()
     {
-       // cout << "---Recorrer-lista-----<" << "size< "  <<ListaInstrucciones.getSize()<<" >"<< endl;
-
         pen = true;
-
         if(ListaInstruccionestemp.getSize() == 0)
             cout << "Lista vacia" << endl;
         else
@@ -361,15 +382,9 @@ private:
             ListaInstruccionestemp.goToStart();
             ListaDatostemp.goToStart();
             int sizeList = ListaDatostemp.getSize();
-            //cout << "el Tamaño de la lista es de: " << sizeList << endl;
-
             for(int i = 0; i!=sizeList; i++)
             {
-                //cout << " Estoy en el  for con pos = " << i << endl;
-
                 string valor = ListaDatostemp.getElement();
-               // Instrucciones instruccion = ListaInstrucciones.getElement();
-                //cout << "   Instruccion actual: "<< int(instruccion) <<". Con el dato: " << valor <<endl;
                ejecutarInstruccion(ListaInstruccionestemp.getElement(),ListaDatostemp.getElement());
                ListaDatostemp.next();
                ListaInstruccionestemp.next();
@@ -409,7 +424,7 @@ private:
                 part2 = "next ";
                 Instrucciones nuevaInstruccion = toInstruction(part1);//*****
                 if(casoEsp(part1)){
-
+                   // return 0;
                 }
 
             }
@@ -698,13 +713,55 @@ private:
                 break;
             }
         }
-
     }
 
+    int leerArchivo(string ruta = "ListaInstrucciones.txt"){
 
+        FileManager filer;
+        ifstream file(ruta);
+        string line;
+
+        while(file.good()){
+            getline(file,line);
+            //cout <<"lectura: "<< line << endl;
+
+            if( 1== gurdarComando(line,false, true))
+                    cout << "" ;
+            else
+                    cout << "" ;
+            //gurdarComando(string cmd,boolean guardarHistorial, boolean guardarEnTemporal)
+
+
+            /*int tam = line.length();
+            string* arraydeString; = filer.StringSplit('%', line, tam);
+            for(int index = 0; index < tam; index++){
+                //cout << arraydeString[index] << endl;
+
+            }*/
+        }
+    }
+
+    void AgregarLista(){
+
+        ListaDatos = ListaDatosLeidas;
+        ListaInstrucciones = ListaInstruccionesLeidas;
+        //ListaDatos.addList(&ListaDatosLeidas);
+        //ListaInstrucciones.addList(&ListaInstruccionesLeidas);
+
+//        ListaDatos.printList();
+
+        ListaDatos.goToStart();
+        ListaInstrucciones.goToStart();
+
+        //string dato = string(ListaDatos.getElement());
+
+        dibujarLista();
+
+    }
 
     virtual ~Turtle() {}
 protected:
 };
 
 #endif // TURTLE_H
+
